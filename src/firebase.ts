@@ -1,5 +1,4 @@
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -13,8 +12,4 @@ const firebaseConfig = {
   appId: process.env.FB_APP_ID
 };
 
-const firebase = initializeApp(firebaseConfig);
-
-export const auth = getAuth(firebase);
-
-export default firebase;
+export const firebase = initializeApp(firebaseConfig);
