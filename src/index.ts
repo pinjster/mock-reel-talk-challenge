@@ -1,14 +1,13 @@
 import express from 'express';
- 
 
 const app: express.Application = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
  
 const port: number = 3000;
- 
+
 app.get('/', (_req, _res) => {
-    _res.send("TypeScript With Express");
+    _res.send("Mock Reel Talk Back End Server");
 });
 
 app.post('/api/customers', (_req, _res) => {
@@ -19,3 +18,5 @@ app.listen(port, () => {
     console.log(`TypeScript with Express 
          http://localhost:${port}/`);
 });
+
+
