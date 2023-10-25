@@ -11,6 +11,7 @@ async function signUp(username: string, password: string, email: string){
         return {
             "success": true,
             "message": "successfully signed up",
+            "uid": data.user.uid,
             "token": await data.user.getIdToken()
         }
     } catch(e: any) {
@@ -28,6 +29,7 @@ async function signIn(email: string, password: string){
         return {
             "success": true,
             "message": "successfully signed in",
+            "uid": data.user.uid,
             "token": await data.user.getIdToken()   
         }
     } catch(e: any) {
@@ -58,10 +60,12 @@ async function signOut(){
 //requires JWT
 //encrypt password
 function resetPassword(){
+    auth.currentUser
     return
 }
 
-function createUser(){
+function createUser(uid: string, username: string, email: string){
+    
     return
 }
 
