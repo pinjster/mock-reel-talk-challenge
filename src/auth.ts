@@ -59,7 +59,7 @@ async function signOut(){
 }
 
 
-//encrypt password
+//needs encrypt password
 function resetPassword(email: string){
     sendPasswordResetEmail(auth, email)
     return

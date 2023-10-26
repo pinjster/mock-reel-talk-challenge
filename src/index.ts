@@ -59,9 +59,6 @@ app.get('/api/updatePassword', async (_req, _res) => {
     resetPassword(email)
 })
 
-
-
-
 //API call for TMDB movies
 app.post('/api/getmovies', async (_req, _res) => {
     const data = await getMovies()

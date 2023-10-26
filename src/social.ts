@@ -38,3 +38,8 @@ function likePost(postID: string){
         }
     }
 }
+
+export {
+    post,
+    likePost
+}
