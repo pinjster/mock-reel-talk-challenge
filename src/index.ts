@@ -1,8 +1,9 @@
 import express from 'express';
 import { firebase } from './firebase';
 import { getAuth } from "firebase/auth";
-import { signIn, signUp, signOut } from './auth';
+import { signIn, signUp, signOut, resetPassword } from './auth';
 import { collection, addDoc, getFirestore } from "firebase/firestore";
+import { getMovies } from './reel';
 
 //node.js app setup
 const app: express.Application = express();
@@ -17,15 +18,18 @@ export const db = getFirestore();
 
  
 //API routes
+//test route
 app.get('/', (_req, _res) => {
     _res.send("Mock Reel Talk Back End Server");
 });
 
+//test route
 app.listen(port, () => {
     console.log(`TypeScript with Express 
          http://localhost:${port}/`);
 });
 
+//signs up user
 app.post('/api/signup', async (_req, _res) => {
     if(!_req.body.password || !_req.body.username || !_req.body.email){
         return _res.status(400).json({
@@ -37,35 +41,29 @@ app.post('/api/signup', async (_req, _res) => {
     _res.status(data.success ? 200 : 400).json(data);
 })
 
+//signs in user
 app.post('/api/signin', async (_req, _res) => {
     const data = await signIn(_req.body.email, _req.body.password);
     _res.status(data.success ? 200 : 400).json(data);
 })
 
+//signs user out
 app.post('/api/signout', async (_req, _res) => {
     const data = await signOut();
     _res.status(data.success ? 200 : 400).json(data);
 })
 
-app.put('/api/updatePassword', async (_req, _res) => {
-    return 
+//sends reset password email
+app.get('/api/updatePassword', async (_req, _res) => {
+    const email = await _req.body.email
+    resetPassword(email)
 })
 
-//test
-app.delete('/api/:id', async (_req, _res) => {
-    const id = _req.params.id
-})
 
-app.get('/api/test', async (_req, _res) => {
-    try {
-        const docRef = await addDoc(collection(db, "users"), {
-          first: "Ada",
-          last: "Lovelace",
-          born: 1815
-        });
-        console.log("Document written with ID: ", docRef.id);
-      } catch (e) {
-        console.error("Error adding document: ", e);
-      }
-    _res.send('supper gret   job')
+
+
+//API call for TMDB movies
+app.post('/api/getmovies', async (_req, _res) => {
+    const data = await getMovies()
+    _res.status(data.success ? 200 : 400).json(data)
 })

@@ -1,3 +1,6 @@
+//Used as reference for data structure tree
+
+
 interface User {
     uid: string,
     username: string,
@@ -31,4 +34,11 @@ interface Reel {
     uid: string,
     title: string,
     release: string
+}
+
+export {
+    User,
+    Comment,
+    Reel,
+    Post
 }

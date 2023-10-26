@@ -1,6 +1,6 @@
-import { auth } from "./index";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut as signOutFB } from "firebase/auth"
-
+import { addDoc, collection, doc, setDoc, Timestamp } from "firebase/firestore";
+import { auth, db } from "./index";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut as signOutFB, sendPasswordResetEmail, confirmPasswordReset } from "firebase/auth"
 
 //returns JWT
 //needs to check username
@@ -8,6 +8,7 @@ import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut as 
 async function signUp(username: string, password: string, email: string){
     try {
         const data = await createUserWithEmailAndPassword(auth, email, password);
+        createUser(data.user.uid, username, email);
         return {
             "success": true,
             "message": "successfully signed up",
@@ -57,19 +58,33 @@ async function signOut(){
     
 }
 
-//requires JWT
+
 //encrypt password
-function resetPassword(){
-    auth.currentUser
+function resetPassword(email: string){
+    sendPasswordResetEmail(auth, email)
     return
 }
 
-function createUser(uid: string, username: string, email: string){
-    
+function confirmResetPassword(oobCode: string, newPassword: string){
+    confirmPasswordReset(auth, oobCode, newPassword)
+}
+
+async function createUser(uid: string, username: string, email: string){
+    const newUser = {
+        uid: uid,
+        username: username,
+        email: email,
+        joined: Timestamp.now()
+    }
+    try {
+        const docRef = await setDoc(doc(db, "users", username), newUser);
+    } catch (e) {
+        console.error("Error adding document: ", e);
+    } 
     return
 }
 
-//requires JWT
+
 function deleteUser(){
     return
 }
